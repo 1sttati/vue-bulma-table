@@ -1,16 +1,16 @@
 <template>
   <div style="position: relative;">
-    <nav class="level" v-if="showLengthChange || showFilter">
-      <div class="level-left" v-if="showLengthChange">
+    <nav class="level" v-if="lengthChange || filterable">
+      <div class="level-left" v-if="lengthChange">
         <div class="level-item">
           <div class="select">
             <select v-model="perPage">
-              <option v-for="(length, i) in tableLength" :value="length" :key="i">{{ length }}</option>
+              <option v-for="(length, i) in pageLength" :value="length" :key="i">{{ length }}</option>
             </select>
           </div>
         </div>
       </div>
-      <div class="level-right" v-if="showFilter && !columnSearchable">
+      <div class="level-right" v-if="filterable && !columnSearchable">
         <div class="level-item">
           <div class="field">
             <p class="control has-icons-left has-icons-right">
@@ -66,23 +66,25 @@
         </tbody>
       </table>
     </div>
-    <nav class="pagination is-centered" role="navigation" aria-label="pagination" v-if="showPagination">
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination" v-if="pagination">
       <a class="pagination-previous" @click="previousPage" :disabled="from - perPage < 0">Previous</a>
       <a class="pagination-next" @click="nextPage"
          :disabled="from + perPage >= filteredData.length">Next page</a>
       <ul class="pagination-list">
         <li><a class="pagination-link" @click="toFirstPage" v-if="currentPage > 1">1</a></li>
         <li><span class="pagination-ellipsis" v-if="currentPage - 2 > 1">&hellip;</span></li>
-        <li><a class="pagination-link" @click="previousPage" v-if="currentPage - 1 > 1">{{ currentPage - 1
-          }}</a></li>
+        <li>
+          <a class="pagination-link" @click="previousPage" v-if="currentPage - 1 > 1">{{ currentPage - 1 }}</a>
+        </li>
         <li><a class="pagination-link is-current">{{ currentPage }}</a></li>
-        <li><a class="pagination-link" @click="nextPage" v-if="currentPage + 1 < lastPage">{{ currentPage + 1
-          }}</a></li>
+        <li>
+          <a class="pagination-link" @click="nextPage" v-if="currentPage + 1 < lastPage">{{ currentPage + 1 }}</a>
+        </li>
         <li><span class="pagination-ellipsis" v-if="currentPage + 2 < lastPage">&hellip;</span></li>
         <li><a class="pagination-link" @click="toLastPage" v-if="currentPage < lastPage">{{ lastPage }}</a></li>
       </ul>
     </nav>
-    <div v-if="isLoading"
+    <div v-if="loading"
          style="display: flex; align-items: center; position: absolute; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); box-shadow: 0 0 20px 5px rgba(0,0,0,0.7);">
       <div style="margin: auto;">
         <icon name="circle-o-notch" scale="4" spin></icon>
@@ -98,16 +100,36 @@
   import 'vue-awesome/icons';
 
   export default {
-    props: [
-      'fields',
-      'data',
-      'pageLength',
-      'onRowClick',
-      'loading',
-      'lengthChange',
-      'filterable',
-      'pagination'
-    ],
+    props: {
+      fields: {
+        type: Array,
+        default: []
+      },
+      data: {
+        type: Array,
+        required: true
+      },
+      pageLength: {
+        type: [Array, Number],
+        default: [10, 25, 50]
+      },
+      loading: {
+        type: Boolean,
+        default: false
+      },
+      lengthChange: {
+        type: Boolean,
+        default: true
+      },
+      filterable: {
+        type: Boolean,
+        default: true
+      },
+      pagination: {
+        type: Boolean,
+        default: true
+      }
+    },
 
     components: {
       Icon
@@ -126,7 +148,7 @@
     },
 
     beforeMount () {
-      this.perPage = typeof this.pageLength === 'undefined' ? 10 : this.pageLength[0] | this.pageLength
+      this.perPage = this.pageLength[0] || this.pageLength
     },
     computed: {
       columnslength () {
@@ -162,21 +184,6 @@
       },
       currentPage () {
         return Math.ceil(this.from / this.perPage) + 1
-      },
-      tableLength () {
-        return this.pageLength ? this.pageLength : [10, 25, 50]
-      },
-      isLoading () {
-        return this.loading ? this.loading : false
-      },
-      showFilter () {
-        return typeof this.filterable !== 'undefined' ? this.filterable : true
-      },
-      showLengthChange () {
-        return typeof this.lengthChange !== 'undefined' ? this.lengthChange : true
-      },
-      showPagination () {
-        return typeof this.pagination !== 'undefined' ? this.pagination : true
       },
       columnSearchable () {
         return this.fields.filter((field) => {
