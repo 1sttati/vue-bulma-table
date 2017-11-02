@@ -1,7 +1,7 @@
 module.exports = {
   entry: './DataTable.vue',
   filename: {
-    js: 'vue-data-table.js'
+    js: 'vue-bulma-table.js'
   },
   sourceMap: false,
   html: false,

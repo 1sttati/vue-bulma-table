@@ -93,6 +93,9 @@
 
 <script>
   import _ from 'lodash'
+  import Icon from 'vue-awesome/components/Icon'
+  import 'vue-awesome/icons/flag';
+  import 'vue-awesome/icons';
 
   export default {
     props: [
@@ -105,6 +108,10 @@
       'filterable',
       'pagination'
     ],
+
+    components: {
+      Icon
+    },
 
     data () {
       return {
@@ -224,6 +231,8 @@
 </script>
 
 <style lang="scss">
+  @import 'node_modules/bulma/bulma.sass';
+
   .datatable-wrapper {
     overflow: auto;
   }

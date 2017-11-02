@@ -1,8 +1,8 @@
 {
-  "name": "vue-data-table",
+  "name": "vue-bulma-table",
   "version": "1.0.0",
-  "description": "Vue DataTable",
-  "main": "dist/vue-data-table.js",
+  "description": "Vue DataTable with Bulma style",
+  "main": "dist/vue-bulma-table.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
