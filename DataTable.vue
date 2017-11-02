@@ -111,7 +111,7 @@
       },
       pageLength: {
         type: [Array, Number],
-        default: [10, 25, 50]
+        default: () => [10, 25, 50]
       },
       loading: {
         type: Boolean,
