@@ -1,0 +1,25 @@
+{
+  "name": "vue-data-table",
+  "version": "1.0.0",
+  "description": "Vue DataTable",
+  "main": "dist/vue-data-table.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["vue", "datatable", "table"],
+  "author": "1sttati <1st.tati@outlook.com>",
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "bulma": "^0.6.0",
+    "lodash": "^4.17.4",
+    "vue": "^2.5.2",
+    "vue-awesome": "^2.3.3"
+  },
+  "devDependencies": {
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6"
+  }
+}
