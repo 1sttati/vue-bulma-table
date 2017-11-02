@@ -1,12 +1,16 @@
 {
   "name": "vue-bulma-table",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Vue DataTable with Bulma style",
   "main": "dist/vue-bulma-table.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["vue", "datatable", "table"],
+  "keywords": [
+    "vue",
+    "datatable",
+    "table"
+  ],
   "author": "1sttati <1st.tati@outlook.com>",
   "files": [
     "dist"
