@@ -19,6 +19,7 @@ Vue.component('data-table', DataTable)
 ```
 
 ## Example:
+
 ### html
 ```html
 <data-table
@@ -36,6 +37,7 @@ Vue.component('data-table', DataTable)
   
 </data-table>
 ```
+
 ### script
 ```js
 export default {
