@@ -237,8 +237,8 @@
   }
 </script>
 
-<style lang="scss" scoped>
-@import 'node_modules/bulma/bulma.sass';
+<style lang="scss">
+// @import 'node_modules/bulma/bulma.sass';
 
 .datatable-wrapper {
   overflow: auto;
