@@ -2,14 +2,14 @@
   "name": "vue-bulma-table",
   "version": "1.2.5",
   "description": "Vue DataTable with Bulma style",
-  "main": "dist/client.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "vue",
     "datatable",
-    "table"
+    "table",
+    "bulma"
   ],
   "author": "1sttati <1st.tati@outlook.com>",
   "files": [
