@@ -6,4 +6,5 @@ module.exports = {
   sourceMap: false,
   html: false,
   format: 'cjs'
+  // cssModules: true
 }
