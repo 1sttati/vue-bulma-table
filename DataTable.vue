@@ -237,7 +237,7 @@
   }
 </script>
 
-<style lang="scss" module>
+<style lang="scss">
   @import 'node_modules/bulma/bulma.sass';
 
   .datatable-wrapper {
