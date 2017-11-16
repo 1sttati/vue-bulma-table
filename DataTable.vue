@@ -237,4 +237,10 @@
   }
 </script>
 
-<style src="./dist/vue-bulma-table.css" module></style>
+<style lang="scss">
+@import 'node_modules/bulma/bulma.sass';
+
+.datatable-wrapper {
+  overflow: auto;
+}
+</style>
