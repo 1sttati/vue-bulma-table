@@ -3,5 +3,5 @@ module.exports = {
   sourceMap: false,
   html: false,
   format: 'cjs',
-  extractCSS: false
+  css: false
 }
