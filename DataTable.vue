@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative;">
-    <nav class="level" v-if="lengthChange || filterable">
+    <nav class="level is-mobile" v-if="lengthChange || filterable">
       <div class="level-left" v-if="lengthChange">
         <div class="level-item">
           <div class="select">
@@ -29,16 +29,22 @@
         <tr>
           <th v-for="(f, index) in fields" :key="index" @click="sortField(f)" class="cursorPointer">
             <span>{{ f.label || f.name }}</span>
-            <icon :name="sort1.order === 'asc' ? 'caret-up': 'caret-down'"
-                  v-if="sort1.field === f.name"></icon>
+            <icon
+              :name="sort1.order === 'asc' ? 'caret-up': 'caret-down'"
+              v-if="sort1.field === f.name"
+            />
           </th>
         </tr>
         <tr v-if="columnSearchable">
           <th v-for="(f, index) in fields" :key="index">
             <div class="field is-narrow" v-if="f.search">
               <div class="control">
-                <input type="text" class="input is-small" :placeholder="f.label || f.name"
-                       v-model="columnsFilter[f.name]">
+                <input
+                  type="text"
+                  class="input is-small"
+                  :placeholder="f.label || f.name"
+                  v-model="columnsFilter[f.name]"
+                >
               </div>
             </div>
           </th>
