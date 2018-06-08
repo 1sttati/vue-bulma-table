@@ -3,7 +3,7 @@
     <nav class="level is-mobile" v-if="lengthChange || filterable">
       <div class="level-left" v-if="lengthChange">
         <div class="level-item">
-          <div class="select">
+          <div class="select" :class="inputClass">
             <select v-model="perPage">
               <option v-for="(length, i) in pageLength" :value="length" :key="i">{{ length }}</option>
             </select>
@@ -14,7 +14,7 @@
         <div class="level-item">
           <div class="field">
             <p class="control has-icons-left has-icons-right">
-              <input class="input" type="email" placeholder="search" v-model="tableFilter">
+              <input class="input" :class="inputClass" type="email" placeholder="search" v-model="tableFilter">
               <span class="icon is-small is-left">
                 <icon name="search"></icon>
               </span>
@@ -72,7 +72,7 @@
         </tbody>
       </table>
     </div>
-    <nav class="pagination is-centered" role="navigation" aria-label="pagination" v-if="pagination">
+    <nav class="pagination is-centered" :class="inputClass" role="navigation" aria-label="pagination" v-if="pagination">
       <a class="pagination-previous" @click="previousPage" :disabled="from - perPage < 0">Previous</a>
       <a class="pagination-next" @click="nextPage"
          :disabled="from + perPage >= filteredData.length">Next page</a>
@@ -134,6 +134,10 @@
       pagination: {
         type: Boolean,
         default: true
+      },
+      inputClass: {
+        type: String,
+        default: ''
       }
     },
 
