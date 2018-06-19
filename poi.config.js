@@ -3,5 +3,7 @@ module.exports = {
   sourceMap: false,
   html: false,
   format: 'cjs',
-  css: false
+  css: {
+    extract: false
+  }
 }
