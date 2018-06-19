@@ -26,49 +26,49 @@
     <div class="datatable-wrapper">
       <table class="table is-striped is-narrow is-fullwidth">
         <thead>
-        <tr>
-          <th v-for="(f, index) in fields" :key="index" @click="sortField(f)" class="cursorPointer">
-            <span>{{ f.label || f.name }}</span>
-            <icon
-              :name="sort1.order === 'asc' ? 'caret-up': 'caret-down'"
-              v-if="sort1.field === f.name"
-            />
-          </th>
-        </tr>
-        <tr v-if="columnSearchable">
-          <th v-for="(f, index) in fields" :key="index">
-            <div class="field is-narrow" v-if="f.search">
-              <div class="control">
-                <input
-                  type="text"
-                  class="input is-small"
-                  :placeholder="f.label || f.name"
-                  v-model="columnsFilter[f.name]"
-                >
+          <tr>
+            <th v-for="(f, index) in fields" :key="index" @click="sortField(f)" class="cursorPointer">
+              <span>{{ f.label || f.name }}</span>
+              <icon
+                :name="sort1.order === 'asc' ? 'caret-up': 'caret-down'"
+                v-if="sort1.field === f.name"
+              />
+            </th>
+          </tr>
+          <tr v-if="columnSearchable">
+            <th v-for="(f, index) in fields" :key="index">
+              <div class="field is-narrow" v-if="f.search">
+                <div class="control">
+                  <input
+                    type="text"
+                    class="input is-small"
+                    :placeholder="f.label || f.name"
+                    v-model="columnsFilter[f.name]"
+                  >
+                </div>
               </div>
-            </div>
-          </th>
-        </tr>
+            </th>
+          </tr>
         </thead>
         <tfoot v-if="$slots['footer']">
-        <slot name="footer"></slot>
+          <slot name="footer"></slot>
         </tfoot>
         <tbody>
-        <tr v-for="(data, index) in dataSet" :key="index" @click="$emit('onRowClick', data)">
-          <template v-for="(f, i) in fields">
-            <template v-if="f.slot">
-              <td :key="i">
-                <slot :name="f.name" :data="data"></slot>
-              </td>
+          <tr v-for="(data, index) in dataSet" :key="index" @click="$emit('onRowClick', data)">
+            <template v-for="(f, i) in fields">
+              <template v-if="f.slot">
+                <td :key="i">
+                  <slot :name="f.name" :data="data"></slot>
+                </td>
+              </template>
+              <template v-else-if="f.callback">
+                <td :key="i">{{ f.callback(data) }}</td>
+              </template>
+              <template v-else>
+                <td :key="i">{{ getObjectData(data, f.name) }}</td>
+              </template>
             </template>
-            <template v-else-if="f.callback">
-              <td :key="i">{{ f.callback(data) }}</td>
-            </template>
-            <template v-else>
-              <td :key="i">{{ getObjectData(data, f.name) }}</td>
-            </template>
-          </template>
-        </tr>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -250,5 +250,10 @@
 <style>
 .datatable-wrapper {
   overflow: auto;
+}
+
+.datatable-wrapper table thead th,
+.datatable-wrapper table thead td {
+  white-space: nowrap;
 }
 </style>
