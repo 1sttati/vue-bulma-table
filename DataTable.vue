@@ -180,7 +180,7 @@ export default {
 
   mounted () {
     if (this.scrollable) {
-      floatHead('table', { scrollContainer: true })
+      floatHead('table')
     }
   },
 
