@@ -23,7 +23,7 @@
         </div>
       </div>
     </nav>
-    <div class="datatable-wrapper" :style="{maxHeight: bodyHeight}">
+    <div class="datatable-wrapper" :style="{maxHeight: wrapperHeight}">
       <table :class="tableClass">
         <thead>
           <tr>
@@ -110,7 +110,9 @@ export default {
   props: {
     fields: {
       type: Array,
-      default: []
+      default () {
+        return []
+      }
     },
     data: {
       type: Array,
@@ -149,8 +151,8 @@ export default {
       default: false
     },
     bodyHeight: {
-      type: Number,
-      default: null
+      type: String,
+      default: '300px'
     }
   },
 
@@ -166,13 +168,15 @@ export default {
       columnsFilter: {},
       sort1: { field: '', order: '' },
       sort2: { field: '', order: '' },
-      sort3: { field: '', order: '' }
+      sort3: { field: '', order: '' },
+      wrapperHeight: null
     }
   },
 
   beforeMount () {
     if (this.scrollable) {
       this.perPage = 1000000
+      this.wrapperHeight = this.bodyHeight
     } else {
       this.perPage = this.pageLength[0] || this.pageLength
     }
@@ -180,7 +184,11 @@ export default {
 
   mounted () {
     if (this.scrollable) {
-      floatHead('table')
+      floatHead('table', {
+          scrollContainer ($table) {
+              return $table.closest('.datatable-wrapper');
+          }
+      })
     }
   },
 
@@ -190,7 +198,7 @@ export default {
     },
     filteredData () {
       const vm = this
-      this.from = 0
+      vm.from = 0
       return this.columnSearchable ? _.filter(this.data, (data) => {
         if (Object.keys(this.columnsFilter).length === 0) return true
         let state = true
@@ -279,5 +287,22 @@ export default {
 .datatable-wrapper table thead th,
 .datatable-wrapper table thead td {
   white-space: nowrap;
+}
+
+.datatable-wrapper::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.datatable-wrapper::-webkit-scrollbar {
+  width: 8px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.datatable-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 </style>
