@@ -185,9 +185,10 @@ export default {
   mounted () {
     if (this.scrollable) {
       floatHead('table', {
-          scrollContainer ($table) {
-              return $table.closest('.datatable-wrapper');
-          }
+        scrollContainer ($table) {
+          return $table.closest('.datatable-wrapper');
+        },
+        zIndex: 0
       })
     }
   },
