@@ -24,7 +24,7 @@
       </div>
     </nav>
     <div class="datatable-wrapper">
-      <table class="table is-striped is-narrow is-fullwidth">
+      <table :class="tableClass">
         <thead>
           <tr>
             <th v-for="(f, index) in fields" :key="index" @click="sortField(f)" class="cursorPointer">
@@ -53,7 +53,7 @@
         <tfoot v-if="$slots['footer']">
           <slot name="footer"></slot>
         </tfoot>
-        <tbody :class="{ scrollable }">
+        <tbody :class="{ scrollable }" :style="{maxHeight: bodyHeight}">
           <tr v-for="(data, index) in dataSet" :key="index" @click="$emit('onRowClick', data)">
             <template v-for="(f, i) in fields">
               <template v-if="f.slot">
@@ -135,6 +135,10 @@
         type: Boolean,
         default: true
       },
+      tableClass: {
+        type: String,
+        default: 'table is-striped is-narrow is-fullwidth'
+      },
       inputClass: {
         type: String,
         default: ''
@@ -142,6 +146,10 @@
       scrollable: {
         type: Boolean,
         default: false
+      },
+      bodyHeight: {
+        type: Number,
+        default: null
       }
     },
 
@@ -162,7 +170,11 @@
     },
 
     beforeMount () {
-      this.perPage = this.pageLength[0] || this.pageLength
+      if (this.scrollable) {
+        this.perPage = 1000000
+      } else {
+        this.perPage = this.pageLength[0] || this.pageLength
+      }
     },
     computed: {
       columnslength () {
