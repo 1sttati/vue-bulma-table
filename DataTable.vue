@@ -1,7 +1,7 @@
 <template>
   <div style="position: relative;">
     <nav class="level is-mobile" v-if="lengthChange || filterable">
-      <div class="level-left" v-if="lengthChange">
+      <div class="level-left" v-if="lengthChange && !scrollable">
         <div class="level-item">
           <div class="select" :class="inputClass">
             <select v-model="perPage">
@@ -53,7 +53,7 @@
         <tfoot v-if="$slots['footer']">
           <slot name="footer"></slot>
         </tfoot>
-        <tbody>
+        <tbody :class="{ scrollable }">
           <tr v-for="(data, index) in dataSet" :key="index" @click="$emit('onRowClick', data)">
             <template v-for="(f, i) in fields">
               <template v-if="f.slot">
@@ -72,7 +72,7 @@
         </tbody>
       </table>
     </div>
-    <nav class="pagination is-centered" :class="inputClass" role="navigation" aria-label="pagination" v-if="pagination">
+    <nav class="pagination is-centered" :class="inputClass" role="navigation" aria-label="pagination" v-if="pagination && !scrollable">
       <a class="pagination-previous" @click="previousPage" :disabled="from - perPage < 0">Previous</a>
       <a class="pagination-next" @click="nextPage"
          :disabled="from + perPage >= filteredData.length">Next page</a>
@@ -138,6 +138,10 @@
       inputClass: {
         type: String,
         default: ''
+      },
+      scrollable: {
+        type: Boolean,
+        default: false
       }
     },
 
@@ -255,5 +259,10 @@
 .datatable-wrapper table thead th,
 .datatable-wrapper table thead td {
   white-space: nowrap;
+}
+
+.scrollable {
+  height: 400px;
+  overflow: auto;
 }
 </style>
