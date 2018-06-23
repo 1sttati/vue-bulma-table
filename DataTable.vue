@@ -100,174 +100,175 @@
 </template>
 
 <script>
-  import _ from 'lodash'
-  import Icon from 'vue-awesome/components/Icon'
-  import 'vue-awesome/icons/flag';
-  import 'vue-awesome/icons';
+import _ from 'lodash'
+import floatHead from 'float-head'
+import Icon from 'vue-awesome/components/Icon'
+import 'vue-awesome/icons/flag';
+import 'vue-awesome/icons';
 
-  export default {
-    props: {
-      fields: {
-        type: Array,
-        default: []
-      },
-      data: {
-        type: Array,
-        required: true
-      },
-      pageLength: {
-        type: [Array, Number],
-        default: () => [10, 25, 50]
-      },
-      loading: {
-        type: Boolean,
-        default: false
-      },
-      lengthChange: {
-        type: Boolean,
-        default: true
-      },
-      filterable: {
-        type: Boolean,
-        default: true
-      },
-      pagination: {
-        type: Boolean,
-        default: true
-      },
-      tableClass: {
-        type: String,
-        default: 'table is-striped is-narrow is-fullwidth'
-      },
-      inputClass: {
-        type: String,
-        default: ''
-      },
-      scrollable: {
-        type: Boolean,
-        default: false
-      },
-      bodyHeight: {
-        type: Number,
-        default: null
+export default {
+  props: {
+    fields: {
+      type: Array,
+      default: []
+    },
+    data: {
+      type: Array,
+      required: true
+    },
+    pageLength: {
+      type: [Array, Number],
+      default: () => [10, 25, 50]
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    lengthChange: {
+      type: Boolean,
+      default: true
+    },
+    filterable: {
+      type: Boolean,
+      default: true
+    },
+    pagination: {
+      type: Boolean,
+      default: true
+    },
+    tableClass: {
+      type: String,
+      default: 'table is-striped is-narrow is-fullwidth'
+    },
+    inputClass: {
+      type: String,
+      default: ''
+    },
+    scrollable: {
+      type: Boolean,
+      default: false
+    },
+    bodyHeight: {
+      type: Number,
+      default: null
+    }
+  },
+
+  components: {
+    Icon
+  },
+
+  data () {
+    return {
+      perPage: 10,
+      from: 0,
+      tableFilter: '',
+      columnsFilter: {},
+      sort1: { field: '', order: '' },
+      sort2: { field: '', order: '' },
+      sort3: { field: '', order: '' }
+    }
+  },
+
+  beforeMount () {
+    if (this.scrollable) {
+      this.perPage = 1000000
+    } else {
+      this.perPage = this.pageLength[0] || this.pageLength
+    }
+  },
+
+  mounted () {
+    if (this.scrollable) {
+      floatHead('table', { scrollContainer: true })
+    }
+  },
+
+  computed: {
+    columnslength () {
+      return Object.keys(this.columnsFilter).length === 0
+    },
+    filteredData () {
+      const vm = this
+      this.from = 0
+      return this.columnSearchable ? _.filter(this.data, (data) => {
+        if (Object.keys(this.columnsFilter).length === 0) return true
+        let state = true
+        for (const i in vm.columnsFilter) {
+          if (vm.columnsFilter[i].length === 0) continue
+          state = state && String(vm.getObjectData(data, i)).toLowerCase().indexOf(vm.columnsFilter[i].toLowerCase()) >= 0
+        }
+        return state
+      }) : _.filter(this.data, (data) => {
+        for (const i in vm.fields) {
+          if (String(vm.getObjectData(data, vm.fields[i].name)).toLowerCase().indexOf(vm.tableFilter.toLowerCase()) >= 0) return true
+        }
+      })
+    },
+    dataSort () {
+      return _.orderBy(this.filteredData, [
+        this.sort1.field, this.sort2.field, this.sort3.field
+      ], [this.sort1.order, this.sort2.order, this.sort3.order])
+    },
+    dataSet () {
+      return this.dataSort.slice(this.from, this.from + this.perPage)
+    },
+    lastPage () {
+      return Math.ceil(this.filteredData.length / this.perPage)
+    },
+    currentPage () {
+      return Math.ceil(this.from / this.perPage) + 1
+    },
+    columnSearchable () {
+      return this.fields.filter((field) => {
+        return typeof field.search !== 'undefined' ? field.search : 0
+      }).length > 0 ? 1 : 0
+    }
+  },
+  methods: {
+    previousPage () {
+      if (this.from - this.perPage >= 0) {
+        this.from = this.from - this.perPage
       }
     },
-
-    components: {
-      Icon
-    },
-
-    data () {
-      return {
-        perPage: 10,
-        from: 0,
-        tableFilter: '',
-        columnsFilter: {},
-        sort1: { field: '', order: '' },
-        sort2: { field: '', order: '' },
-        sort3: { field: '', order: '' }
+    nextPage () {
+      if (this.from + this.perPage < this.filteredData.length) {
+        this.from = this.from + this.perPage
       }
     },
-
-    beforeMount () {
-      if (this.scrollable) {
-        this.perPage = 1000000
+    toFirstPage () {
+      this.from = 0
+    },
+    toLastPage () {
+      this.from = Math.floor((this.filteredData.length - 1) / this.perPage) * this.perPage
+    },
+    sortField (field) {
+      if (this.sort1.field === field.name) {
+        this.sort1.order = this.sort1.order !== 'asc' ? 'asc' : 'desc'
       } else {
-        this.perPage = this.pageLength[0] || this.pageLength
-      }
-    },
-
-    mounted () {
-      if (this.scrollable) {
-        $('table').floatThead({ scrollContainer: true });
-      }
-    },
-
-    computed: {
-      columnslength () {
-        return Object.keys(this.columnsFilter).length === 0
-      },
-      filteredData () {
-        const vm = this
-        this.from = 0
-        return this.columnSearchable ? _.filter(this.data, (data) => {
-          if (Object.keys(this.columnsFilter).length === 0) return true
-          let state = true
-          for (const i in vm.columnsFilter) {
-            if (vm.columnsFilter[i].length === 0) continue
-            state = state && String(vm.getObjectData(data, i)).toLowerCase().indexOf(vm.columnsFilter[i].toLowerCase()) >= 0
-          }
-          return state
-        }) : _.filter(this.data, (data) => {
-          for (const i in vm.fields) {
-            if (String(vm.getObjectData(data, vm.fields[i].name)).toLowerCase().indexOf(vm.tableFilter.toLowerCase()) >= 0) return true
-          }
-        })
-      },
-      dataSort () {
-        return _.orderBy(this.filteredData, [
-          this.sort1.field, this.sort2.field, this.sort3.field
-        ], [this.sort1.order, this.sort2.order, this.sort3.order])
-      },
-      dataSet () {
-        return this.dataSort.slice(this.from, this.from + this.perPage)
-      },
-      lastPage () {
-        return Math.ceil(this.filteredData.length / this.perPage)
-      },
-      currentPage () {
-        return Math.ceil(this.from / this.perPage) + 1
-      },
-      columnSearchable () {
-        return this.fields.filter((field) => {
-          return typeof field.search !== 'undefined' ? field.search : 0
-        }).length > 0 ? 1 : 0
-      }
-    },
-    methods: {
-      previousPage () {
-        if (this.from - this.perPage >= 0) {
-          this.from = this.from - this.perPage
+        Object.assign(this.sort3, this.sort2)
+        Object.assign(this.sort2, this.sort1)
+        this.sort1 = {
+          field: field.name,
+          order: 'asc'
         }
-      },
-      nextPage () {
-        if (this.from + this.perPage < this.filteredData.length) {
-          this.from = this.from + this.perPage
-        }
-      },
-      toFirstPage () {
-        this.from = 0
-      },
-      toLastPage () {
-        this.from = Math.floor((this.filteredData.length - 1) / this.perPage) * this.perPage
-      },
-      sortField (field) {
-        if (this.sort1.field === field.name) {
-          this.sort1.order = this.sort1.order !== 'asc' ? 'asc' : 'desc'
-        } else {
-          Object.assign(this.sort3, this.sort2)
-          Object.assign(this.sort2, this.sort1)
-          this.sort1 = {
-            field: field.name,
-            order: 'asc'
-          }
-        }
-      },
-      getObjectData (data, field) {
-        let o = data
-        field.split('.').forEach(key => {
-          o = o[key] ? o[key] : ''
-        })
-        return o
       }
     },
+    getObjectData (data, field) {
+      let o = data
+      field.split('.').forEach(key => {
+        o = o[key] ? o[key] : ''
+      })
+      return o
+    }
+  },
 
-    watch: {
-      dataSet (data) {
-        this.$emit('currentData', data)
-      }
+  watch: {
+    dataSet (data) {
+      this.$emit('currentData', data)
     }
   }
+}
 </script>
 
 <style>
