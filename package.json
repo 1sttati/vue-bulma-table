@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "bulma": "^0.6.0",
+    "floatthead": "^2.1.2",
     "vue-awesome": "^2.3.3",
     "vue-style-loader": "^4.1.0"
   },

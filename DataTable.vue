@@ -23,7 +23,7 @@
         </div>
       </div>
     </nav>
-    <div class="datatable-wrapper">
+    <div class="datatable-wrapper" :style="{maxHeight: bodyHeight}">
       <table :class="tableClass">
         <thead>
           <tr>
@@ -53,7 +53,7 @@
         <tfoot v-if="$slots['footer']">
           <slot name="footer"></slot>
         </tfoot>
-        <tbody :class="{ scrollable }" :style="{maxHeight: bodyHeight}">
+        <tbody>
           <tr v-for="(data, index) in dataSet" :key="index" @click="$emit('onRowClick', data)">
             <template v-for="(f, i) in fields">
               <template v-if="f.slot">
@@ -176,6 +176,13 @@
         this.perPage = this.pageLength[0] || this.pageLength
       }
     },
+
+    mounted () {
+      if (this.scrollable) {
+        $('table').floatThead({ scrollContainer: true });
+      }
+    },
+
     computed: {
       columnslength () {
         return Object.keys(this.columnsFilter).length === 0
@@ -271,10 +278,5 @@
 .datatable-wrapper table thead th,
 .datatable-wrapper table thead td {
   white-space: nowrap;
-}
-
-.scrollable {
-  height: 400px;
-  overflow: auto;
 }
 </style>
