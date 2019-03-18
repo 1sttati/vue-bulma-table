@@ -107,6 +107,10 @@ import 'vue-awesome/icons/flag';
 import 'vue-awesome/icons';
 
 export default {
+  components: {
+    Icon
+  },
+
   props: {
     fields: {
       type: Array,
@@ -120,7 +124,9 @@ export default {
     },
     pageLength: {
       type: [Array, Number],
-      default: () => [10, 25, 50]
+      default () {
+        return [10, 25, 50]
+      }
     },
     loading: {
       type: Boolean,
@@ -156,10 +162,6 @@ export default {
     }
   },
 
-  components: {
-    Icon
-  },
-
   data () {
     return {
       perPage: 10,
@@ -169,25 +171,6 @@ export default {
       sort1: { field: '', order: '' },
       sort2: { field: '', order: '' },
       sort3: { field: '', order: '' }
-    }
-  },
-
-  beforeMount () {
-    if (this.scrollable) {
-      this.perPage = 1000000
-    } else {
-      this.perPage = Array.isArray(this.pageLength) ? this.pageLength[0] : this.pageLength
-    }
-  },
-
-  mounted () {
-    if (this.scrollable) {
-      floatHead('table', {
-        scrollContainer ($table) {
-          return $table.closest('.datatable-wrapper');
-        },
-        zIndex: 0
-      })
     }
   },
 
@@ -234,11 +217,33 @@ export default {
   },
 
   watch: {
+    dataSet (data) {
+      this.$emit('currentData', data)
+    },
     pageLength (data) {
       console.log(`pageLength: ${data}`)
       this.$nextTick(() => {
         this.perPage = Array.isArray(data) ? data[0] : data
         console.log(`perPage: ${this.perPage}`)
+      })
+    }
+  },
+
+  beforeMount () {
+    if (this.scrollable) {
+      this.perPage = 1000000
+    } else {
+      this.perPage = Array.isArray(this.pageLength) ? this.pageLength[0] : this.pageLength
+    }
+  },
+
+  mounted () {
+    if (this.scrollable) {
+      floatHead('table', {
+        scrollContainer ($table) {
+          return $table.closest('.datatable-wrapper');
+        },
+        zIndex: 0
       })
     }
   },
@@ -278,12 +283,6 @@ export default {
         o = o[key] ? o[key] : ''
       })
       return o
-    }
-  },
-
-  watch: {
-    dataSet (data) {
-      this.$emit('currentData', data)
     }
   }
 }
