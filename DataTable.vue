@@ -23,7 +23,7 @@
         </div>
       </div>
     </nav>
-    <div class="datatable-wrapper" :style="{maxHeight: wrapperHeight}">
+    <div class="datatable-wrapper" :style="{maxHeight: scrollable ? bodyHeight : null}">
       <table :class="tableClass">
         <thead>
           <tr>
@@ -168,15 +168,13 @@ export default {
       columnsFilter: {},
       sort1: { field: '', order: '' },
       sort2: { field: '', order: '' },
-      sort3: { field: '', order: '' },
-      wrapperHeight: null
+      sort3: { field: '', order: '' }
     }
   },
 
   beforeMount () {
     if (this.scrollable) {
       this.perPage = 1000000
-      this.wrapperHeight = this.bodyHeight
     } else {
       this.perPage = this.pageLength[0] || this.pageLength
     }
@@ -234,6 +232,13 @@ export default {
       }).length > 0 ? 1 : 0
     }
   },
+
+  watch: {
+    pageLength (data) {
+      this.perPage = data[0] || data
+    }
+  },
+
   methods: {
     previousPage () {
       if (this.from - this.perPage >= 0) {

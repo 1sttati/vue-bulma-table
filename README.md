@@ -57,7 +57,7 @@ export default {
         {
           name: 'age',
           label: 'Age',
-          callback (data) {       // optional - get data of the role and return to cell
+          callback: data => {   // optional - get data of the role and return to cell
             return data.age * 2
           }
         }
