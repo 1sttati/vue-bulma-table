@@ -221,11 +221,7 @@ export default {
       this.$emit('currentData', data)
     },
     pageLength (data) {
-      console.log(`pageLength: ${data}`)
-      this.$nextTick(() => {
-        this.perPage = Array.isArray(data) ? data[0] : data
-        console.log(`perPage: ${this.perPage}`)
-      })
+      this.perPage = Array.isArray(data) ? data[0] : data
     }
   },
 
