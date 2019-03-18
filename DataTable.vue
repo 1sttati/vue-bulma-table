@@ -14,7 +14,7 @@
         <div class="level-item">
           <div class="field">
             <p class="control has-icons-left has-icons-right">
-              <input class="input" :class="inputClass" type="email" placeholder="search" v-model="tableFilter">
+              <input class="input" :class="inputClass" type="text" placeholder="search" v-model="tableFilter">
               <span class="icon is-small is-left">
                 <icon name="search"></icon>
               </span>
