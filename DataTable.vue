@@ -176,7 +176,7 @@ export default {
     if (this.scrollable) {
       this.perPage = 1000000
     } else {
-      this.perPage = this.pageLength[0] || this.pageLength
+      this.perPage = Array.isArray(this.pageLength) ? this.pageLength[0] : this.pageLength
     }
   },
 
@@ -235,7 +235,7 @@ export default {
 
   watch: {
     pageLength (data) {
-      this.perPage = data[0] || data
+      this.perPage = Array.isArray(data) ? data[0] : data
     }
   },
 
