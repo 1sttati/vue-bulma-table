@@ -100,7 +100,10 @@
 </template>
 
 <script>
-import 'vue-awesome/icons/flag'
+import 'vue-awesome/icons/search'
+import 'vue-awesome/icons/circle-o-notch'
+import 'vue-awesome/icons/caret-up'
+import 'vue-awesome/icons/caret-down'
 import _ from 'lodash'
 import floatHead from 'float-head'
 import Icon from 'vue-awesome/components/Icon'
