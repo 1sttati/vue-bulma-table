@@ -100,10 +100,10 @@
 </template>
 
 <script>
+import 'vue-awesome/icons/flag'
 import _ from 'lodash'
 import floatHead from 'float-head'
 import Icon from 'vue-awesome/components/Icon'
-import 'vue-awesome/icons/flag'
 
 export default {
   components: {
