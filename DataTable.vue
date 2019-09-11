@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative;">
-    <nav class="level is-mobile" v-if="lengthChange || filterable">
+    <nav class="level" v-if="lengthChange || filterable">
       <div class="level-left" v-if="lengthChange && !scrollable">
         <div class="level-item">
           <div class="select" :class="inputClass">
