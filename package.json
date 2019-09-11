@@ -1,6 +1,6 @@
 {
   "name": "vue-bulma-table",
-  "version": "1.5.19",
+  "version": "1.5.20",
   "description": "Vue DataTable with Bulma style",
   "main": "dist/main.js",
   "scripts": {
