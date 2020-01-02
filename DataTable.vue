@@ -94,7 +94,7 @@
     <div v-if="loading"
          style="display: flex; align-items: center; position: absolute; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); box-shadow: 0 0 20px 5px rgba(0,0,0,0.7);">
       <div style="margin: auto;">
-        <i class="fa fa-circle-notch fa-3x fa-spin" style="coloe: white;" />
+        <i class="fa fa-circle-notch fa-3x fa-spin" style="color: white;" />
       </div>
     </div>
   </div>
