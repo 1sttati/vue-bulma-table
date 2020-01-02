@@ -16,7 +16,7 @@
             <p class="control has-icons-left has-icons-right">
               <input class="input" :class="inputClass" type="text" placeholder="search" v-model="tableFilter">
               <span class="icon is-small is-left">
-                <icon name="search"></icon>
+                <i class="fa fa-search" />
               </span>
             </p>
           </div>
@@ -29,9 +29,10 @@
           <tr>
             <th v-for="(f, index) in fields" :key="index" @click="sortField(f)" class="cursorPointer">
               <span>{{ f.label || f.name }}</span>
-              <icon
-                :name="sort1.order === 'asc' ? 'caret-up': 'caret-down'"
+              <i
                 v-if="sort1.field === f.name"
+                :class="sort1.order === 'asc' ? 'fa-caret-up': 'fa-caret-down'"
+                class="fa"
               />
             </th>
           </tr>
@@ -93,26 +94,17 @@
     <div v-if="loading"
          style="display: flex; align-items: center; position: absolute; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); box-shadow: 0 0 20px 5px rgba(0,0,0,0.7);">
       <div style="margin: auto;">
-        <icon name="circle-o-notch" scale="4" spin></icon>
+        <i class="fa fa-circle-notch fa-3x fa-spin" style="coloe: white;" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import 'vue-awesome/icons/search'
-import 'vue-awesome/icons/circle-o-notch'
-import 'vue-awesome/icons/caret-up'
-import 'vue-awesome/icons/caret-down'
 import _ from 'lodash'
 import floatHead from 'float-head'
-import Icon from 'vue-awesome/components/Icon'
 
 export default {
-  components: {
-    Icon
-  },
-
   props: {
     fields: {
       type: Array,
@@ -287,6 +279,9 @@ export default {
 </script>
 
 <style>
+@import './fontawesome/css/fontawesome.min.css';
+@import './fontawesome/css/fa-solid.min.css';
+
 .datatable-wrapper {
   overflow: auto;
 }
