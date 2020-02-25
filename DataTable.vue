@@ -174,7 +174,6 @@ export default {
     },
     filteredData () {
       const vm = this
-      vm.from = 0
       return this.columnSearchable ? _.filter(this.data, (data) => {
         if (Object.keys(this.columnsFilter).length === 0) return true
         let state = true
@@ -216,6 +215,15 @@ export default {
     },
     pageLength (data) {
       this.perPage = Array.isArray(data) ? data[0] : data
+    },
+    tableFilter () {
+      this.from = 0
+    },
+    columnsFilter: {
+      handler () {
+        this.from = 0
+      },
+      deep: true
     }
   },
 
