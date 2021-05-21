@@ -27,7 +27,7 @@
       <table :class="tableClass">
         <thead>
           <tr>
-            <th v-for="(f, index) in fields" :key="index" @click="sortField(f)" class="cursorPointer">
+            <th v-for="(f, index) in fields" :key="index" :class="floatHead" @click="sortField(f)">
               <span>{{ f.label || f.name }}</span>
               <i
                 v-if="sort1.field === f.name"
@@ -37,7 +37,7 @@
             </th>
           </tr>
           <tr v-if="columnSearchable">
-            <th v-for="(f, index) in fields" :key="index" :class="floatHead">
+            <th v-for="(f, index) in fields" :key="index">
               <div class="field is-narrow" v-if="f.search">
                 <div class="control">
                   <input
@@ -212,8 +212,9 @@ export default {
       }).length > 0 ? 1 : 0
     },
     floatHead () {
-      if (this.scrollable) return 'floatHead'
-      return
+      let className = 'cursorPointer'
+      if (this.scrollable) className += ' floatHead'
+      return className
     }
   },
 
