@@ -212,12 +212,7 @@ export default {
       }).length > 0 ? 1 : 0
     },
     floatHead () {
-      if (this.scrollable) return {
-        background: 'white',
-        position: 'sticky',
-        top: 0,
-        'box-shadow': '0 2px 2px -1px rgba(0, 0, 0, 0.1)'
-      }
+      if (this.scrollable) return 'floatHead'
       return
     }
   },
@@ -319,5 +314,11 @@ export default {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+.floatHead {
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1)
 }
 </style>
