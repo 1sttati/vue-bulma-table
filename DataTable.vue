@@ -37,7 +37,7 @@
             </th>
           </tr>
           <tr v-if="columnSearchable">
-            <th v-for="(f, index) in fields" :key="index">
+            <th v-for="(f, index) in fields" :key="index" :class="floatHead">
               <div class="field is-narrow" v-if="f.search">
                 <div class="control">
                   <input
@@ -102,7 +102,6 @@
 
 <script>
 import _ from 'lodash'
-import floatHead from 'float-head'
 
 export default {
   props: {
@@ -164,7 +163,9 @@ export default {
       columnsFilter: {},
       sort1: { field: '', order: '' },
       sort2: { field: '', order: '' },
-      sort3: { field: '', order: '' }
+      sort3: { field: '', order: '' },
+
+      regexSearch: false
     }
   },
 
@@ -184,7 +185,9 @@ export default {
         return state
       }) : _.filter(this.data, (data) => {
         for (const i in vm.fields) {
-          if (String(vm.getObjectData(data, vm.fields[i].name)).toLowerCase().indexOf(vm.tableFilter.toLowerCase()) >= 0) return true
+          if (this.regexSearch) {
+            return String(vm.getObjectData(data, vm.fields[i].name)).search(vm.tableFilter) >= 0
+          } else if (String(vm.getObjectData(data, vm.fields[i].name)).toLowerCase().indexOf(vm.tableFilter.toLowerCase()) >= 0) return true
         }
       })
     },
@@ -194,6 +197,7 @@ export default {
       ], [this.sort1.order, this.sort2.order, this.sort3.order])
     },
     dataSet () {
+      if (this.scrollable) return this.dataSort
       return this.dataSort.slice(this.from, this.from + this.perPage)
     },
     lastPage () {
@@ -206,6 +210,15 @@ export default {
       return this.fields.filter((field) => {
         return typeof field.search !== 'undefined' ? field.search : 0
       }).length > 0 ? 1 : 0
+    },
+    floatHead () {
+      if (this.scrollable) return {
+        background: 'white',
+        position: 'sticky',
+        top: 0,
+        'box-shadow': '0 2px 2px -1px rgba(0, 0, 0, 0.1)'
+      }
+      return
     }
   },
 
@@ -232,17 +245,6 @@ export default {
       this.perPage = 1000000
     } else {
       this.perPage = Array.isArray(this.pageLength) ? this.pageLength[0] : this.pageLength
-    }
-  },
-
-  mounted () {
-    if (this.scrollable) {
-      floatHead('table', {
-        scrollContainer ($table) {
-          return $table.closest('.datatable-wrapper');
-        },
-        zIndex: 0
-      })
     }
   },
 
