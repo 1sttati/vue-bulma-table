@@ -55,7 +55,7 @@
           <slot name="footer"></slot>
         </tfoot>
         <tbody>
-          <tr v-for="(data, index) in dataSet" :key="index" @click="$emit('onRowClick', data)">
+          <tr v-for="(data, index) in dataSet" :key="index" :class="!!data.DataTableRowClass ? data.DataTableRowClass : ''" @click="$emit('onRowClick', data)">
             <template v-for="(f, i) in fields">
               <template v-if="f.slot">
                 <td :key="i">
