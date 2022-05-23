@@ -27,14 +27,23 @@
       <table :class="tableClass">
         <thead>
           <tr>
-            <th v-for="(f, index) in fields" :key="index" :class="floatHead" @click="sortField(f)">
-              <span>{{ f.label || f.name }}</span>
-              <i
-                v-if="sort1.field === f.name"
-                :class="sort1.order === 'asc' ? 'fa-caret-up': 'fa-caret-down'"
-                class="fa"
-              />
-            </th>
+            <template v-for="(f, index) in fields">
+              <template v-if="f.headerSlot">
+                <th :key="index" :class="floatHead" @click="sortField(f)">
+                  <slot :name="f.name+'Header'" :data="f" />
+                </th>
+              </template>
+              <template v-else>
+                <th :key="index" :class="floatHead" @click="sortField(f)">
+                  <span>{{ f.label || f.name }}</span>
+                  <i
+                    v-if="sort1.field === f.name"
+                    :class="sort1.order === 'asc' ? 'fa-caret-up': 'fa-caret-down'"
+                    class="fa"
+                  />
+                </th>
+              </template>
+            </template>
           </tr>
           <tr v-if="columnSearchable">
             <th v-for="(f, index) in fields" :key="index">
